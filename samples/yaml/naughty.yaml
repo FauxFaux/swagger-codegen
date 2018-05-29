@@ -32,10 +32,7 @@ paths:
           schema:
             allOf:
               - $ref: "#/definitions/PrimaryConfig"
-              - type: "object"
-                properties:
-                  tacked_on_later:
-                    type: "string"
+              - $ref: "#/definitions/ExtraConfig"
 
       responses:
         '200':
@@ -55,3 +52,8 @@ definitions:
         type: string
       second_main_property:
         type: number
+  ExtraConfig:
+    type: object
+    properties:
+      tacked_on_later:
+        type: "string"
