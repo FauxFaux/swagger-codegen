@@ -1,0 +1,57 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Example API
+  description: |
+    blabla
+  termsOfService: Copyright TEST eG - 2015
+  contact:
+    name: info@example.de
+  license:
+    name: Example
+    url: http://a.b/
+
+host: localhost:58454
+basePath: /test/api
+schemes:
+ - http
+consumes:
+ - application/json;charset=utf-8
+produces:
+ - application/json;charset=utf-8
+
+paths:
+
+  /core/v1/test/:
+    post:
+      summary: Test Summary
+      description: foo
+      parameters:
+        - name: body
+          in: body
+          schema:
+            allOf:
+              - $ref: "#/definitions/PrimaryConfig"
+              - type: "object"
+                properties:
+                  tacked_on_later:
+                    type: "string"
+
+      responses:
+        '200':
+          description: Success.
+          headers:
+            RequestId:
+              type: string
+              description: Request id
+          schema:
+            type: number
+
+definitions:
+  PrimaryConfig:
+    type: object
+    properties:
+      first_main_property:
+        type: string
+      second_main_property:
+        type: number
