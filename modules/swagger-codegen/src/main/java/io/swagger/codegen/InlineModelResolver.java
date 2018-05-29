@@ -80,6 +80,32 @@ public class InlineModelResolver {
                                                 }
                                             }
                                         }
+                                    } else if (model instanceof ComposedModel) {
+                                        ComposedModel cm = (ComposedModel) model;
+                                        Map<String, Property> properties = new HashMap<>();
+
+                                        for (Model child : cm.getAllOf()) {
+                                            Model relevant = child;
+                                            if (child instanceof RefModel) {
+                                                RefModel rm = (RefModel) child;
+                                                relevant = models.get(rm.getSimpleRef());
+                                            }
+                                            assert null != relevant;
+
+                                            // TODO: presumably this fails for non-ref, non-object models
+                                            properties.putAll(relevant.getProperties());
+                                        }
+
+                                        flattenProperties(properties, pathname);
+
+                                        String modelName = uniqueName(bp.getName());
+                                        Model innerModel = modelFromProperty(new ObjectProperty(properties), modelName);
+                                        ((ModelImpl) innerModel).setType("object");
+                                        addGenerated(modelName, innerModel);
+                                        swagger.addDefinition(modelName, innerModel);
+                                        bp.setSchema(innerModel);
+
+                                        // TODO: dedup with matchGenerated
                                     }
                                 }
                             }
